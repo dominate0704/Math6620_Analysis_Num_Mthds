@@ -11,12 +11,15 @@ error_secant =[];
 C ={};
 s1= "x+ exp(-";
 s2 = "*x^2)*cos(x)";
+iterate_time = ["1","2","3","4","5","6","7","8","9","10"];
 while (k <= n)
     syms x
     f = x+ exp(-A(k)*x^2)*cos(x);
     f1 = diff(f);
     str= sprintf('%s%d%s',s1,A(k),s2);
     C{k}=str;
+    str = sprintf('Function f(x) = %s, x0 = %d. Here is the iteration table:', str, 0);
+    disp(str);
     [ x_n, error_n] = newton( inline(f), inline(f1), 0,  iterate );
     x_newton(k)= x_n(iterate);
     error_newton(k)= error_n(iterate);
@@ -24,6 +27,12 @@ while (k <= n)
     x_secant(k)= x_s(iterate);
     error_secant(k)= error_s(iterate);
     k= k+1;
+    G = table('RowNames',iterate_time');
+    G.newton_x = x_n';
+    G.error_newton = error_n';
+    G.secant_x = x_s';
+    G.error_secant = error_s';
+    disp(G);
 end
 a = string(C);
 b = cellstr(a');
@@ -44,6 +53,7 @@ while (k <= n)
     f = x+ exp(-A(k)*x^2)*cos(x);
     f1 = diff(f);
     str= sprintf('%s%d%s',s1,A(k),s2);
+    str = sprintf('Function f(x) = %s, Here is the result table after 10 time iterations based on different initial guess:', str);
     disp(str);
     i = 1;
     while(i<= length(x_0))

@@ -28,8 +28,13 @@ function [ x, ex ] = secant( f, x0, x1, nmax )
     while (k <= nmax)
         f0= f1;
         f1=f(x(k-1));
-        x(k) = (x(k-2)*f1 - x(k-1)*f0)/(f1-f0);
-        ex(k) = abs(x(k)-x(k-1));
+        if (f0 == f1)
+            x(k)= x(k-1);
+            ex(k) = 0;
+        else
+            x(k) = (x(k-2)*f1 - x(k-1)*f0)/(f1-f0);
+            ex(k) = abs(x(k)-x(k-1));
+        end
         k = k+1;
     end
 end
